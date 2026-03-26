@@ -1,0 +1,194 @@
+* {
+	box-sizing: border-box;
+}
+
+body {
+	margin: 0;
+	font-family: Arial, sans-serif;
+	background: #f5f5f5;
+}
+
+.container {
+	max-width: 1200px;
+	margin: 40px auto;
+	padding: 20px;
+	background: #ffffff;
+	border: 1px solid #ddd;
+}
+
+h1,
+h2 {
+	margin: 0;
+}
+
+.extra-box {
+	width: 80%;
+	margin: 20px auto;
+	padding: 16px;
+	border: 1px solid #ddd;
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+}
+
+.layout {
+	display: grid;
+	grid-template-columns: 1fr auto 1fr;
+	gap: 20px;
+	align-items: stretch;
+}
+
+.panel {
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+	padding: 16px;
+	border: 1px solid #ddd;
+}
+
+textarea,
+#submittedOutput,
+#reasoningOutput {
+	width: 100%;
+	padding: 10px;
+	border: 1px solid #999;
+	background: #fff;
+	white-space: pre-wrap;
+}
+
+textarea {
+	resize: vertical;
+}
+
+#messageInput,
+#submittedOutput {
+	min-height: 280px;
+}
+
+#reasoningOutput {
+	min-height: 120px;
+}
+
+.middle-actions {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+button {
+	width: 130px;
+	padding: 12px;
+	cursor: pointer;
+}
+
+#statusText {
+	margin: 0;
+	font-weight: 600;
+	min-height: 20px;
+}
+
+@media (max-width: 800px) {
+	.extra-box {
+		width: 100%;
+	}
+
+	.layout {
+		grid-template-columns: 1fr;
+	}
+
+	.middle-actions {
+		justify-content: flex-start;
+	}
+}
+* {
+	box-sizing: border-box;
+}
+
+body {
+	margin: 0;
+	font-family: Arial, sans-serif;
+	background: #f5f5f5;
+}
+
+.container {
+	max-width: 1100px;
+	margin: 40px auto;
+	padding: 20px;
+	background: #ffffff;
+	border: 1px solid #ddd;
+}
+
+.extra-box {
+	width: 80%;
+	margin: 20px auto;
+	padding: 16px;
+	border: 1px solid #ddd;
+	min-height: 120px;
+}
+
+.layout {
+	display: grid;
+	grid-template-columns: 1fr auto 1fr;
+	gap: 20px;
+	align-items: stretch;
+}
+
+.panel {
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+	padding: 16px;
+	border: 1px solid #ddd;
+}
+
+h1,
+h2 {
+	margin: 0;
+}
+
+textarea {
+	width: 100%;
+	resize: vertical;
+	padding: 10px;
+	min-height: 280px;
+}
+
+button {
+	width: 120px;
+	padding: 10px;
+	cursor: pointer;
+}
+
+.middle-actions {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+#statusText {
+	margin-top: 0;
+	font-weight: 600;
+}
+
+#submittedOutput {
+	margin-top: 0;
+	min-height: 280px;
+	padding: 10px;
+	background: #fafafa;
+	border: 1px solid #ddd;
+	white-space: pre-wrap;
+}
+
+@media (max-width: 800px) {
+	.extra-box {
+		width: 100%;
+	}
+
+	.layout {
+		grid-template-columns: 1fr;
+	}
+
+	.middle-actions {
+		justify-content: flex-start;
+	}
+}

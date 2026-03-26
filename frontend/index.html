@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>HCAI Email Assistant</title>
+		<link rel="stylesheet" href="./src/assets/style.css">
+	</head>
+	<body>
+		<main class="container">
+			<h1>Email Draft Prototype</h1>
+
+			<section class="extra-box">
+				<h2>Context Box</h2>
+				<textarea id="contextInput" rows="4" placeholder="Add context, previous mails, tone hints..."></textarea>
+			</section>
+
+			<form id="textForm" class="layout">
+				<section class="panel">
+					<h2>User Email</h2>
+					<textarea id="messageInput" name="message" rows="10" placeholder="Type here..."></textarea>
+				</section>
+
+				<div class="middle-actions">
+					<button type="submit">Submit</button>
+				</div>
+
+				<section class="panel">
+					<h2>AI Suggestion</h2>
+					<pre id="submittedOutput"></pre>
+					<p id="statusText" aria-live="polite"></p>
+				</section>
+			</form>
+
+			<section class="extra-box">
+				<h2>Reasoning</h2>
+				<pre id="reasoningOutput"></pre>
+			</section>
+		</main>
+
+		<script src="./src/scripts/code.js"></script>
+	</body>
+</html>
