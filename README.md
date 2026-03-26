@@ -17,7 +17,7 @@ Project for the HCAI course making an email AI assistent tool/interface
 
 ## Run backend
 
-- Run the 'main.py' python file 
+- Run the 'main.py' python file
 
 ## Run frontend
 
