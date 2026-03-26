@@ -14,14 +14,11 @@ Project for the HCAI course making an email AI assistent tool/interface
 1. Create/activate your venv.
 2. Install dependencies:
 	- `pip install -r backend/requirements.txt`
-3. Create `backend/.env` and set:
-	- `OPENAI_API_KEY=your_openai_api_key_here`
-	- `OPENAI_MODEL=gpt-4o-mini`
 
 ## Run backend
 
-- `uvicorn backend.main:app --host 127.0.0.1 --port 8000`
+- Run the 'main.py' python file 
 
 ## Run frontend
 
-- Open `frontend/index.html` in browser.
+- Open `http://127.0.0.1:5500/frontend/` in browser.
