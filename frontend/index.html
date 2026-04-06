@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>HCAI Email Assistant</title>
+		<link rel="stylesheet" href="./src/assets/style.css">
+	</head>
+	<body>
+		<main class="container">
+			<h1>Email Draft Prototype</h1>
+
+			<section class="extra-box">
+				<h2>Context Box</h2>
+				<div style="margin-bottom: 10px; display: flex; gap: 8px; flex-wrap: wrap;">
+    <span style="font-size: 14px; color: #666; width: 100%;">Quick Presets:</span>
+    <button type="button" class="preset-btn" onclick="setContext('Make it very formal and professional')">Formal</button>
+    <button type="button" class="preset-btn" onclick="setContext('Keep it casual and friendly')">Friendly</button>
+    <button type="button" class="preset-btn" onclick="setContext('Make it short and concise')">Shorten</button>
+    <button type="button" class="preset-btn" onclick="setContext('Explain as a family emergency')">Emergency</button>
+    <button type="button" class="preset-btn" onclick="setContext('')" style="color: #d32f2f; border-color: #ffcdd2;">Clear</button>
+</div>
+
+<style>
+    .preset-btn {
+        padding: 6px 14px;
+        cursor: pointer;
+        border: 1px solid #ddd;
+        background: #ffffff;
+        border-radius: 20px;
+        font-size: 13px;
+        box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+        transition: all 0.2s ease;
+    }
+    .preset-btn:hover { background: #f8f9fa; border-color: #bbb; transform: translateY(-1px); }
+</style>
+				<textarea id="contextInput" rows="4" placeholder="Add context, previous mails, tone hints..."></textarea>
+			</section>
+
+			<form id="textForm" class="layout">
+				<section class="panel">
+					<h2>User Email</h2>
+					<textarea id="messageInput" name="message" rows="10" placeholder="Type here..."></textarea>
+				</section>
+
+				<div class="middle-actions">
+					<button type="submit">Submit</button>
+				</div>
+
+				<section class="panel">
+					<h2>AI Suggestion</h2>
+					<pre id="submittedOutput"></pre>
+					<p id="statusText" aria-live="polite"></p>
+				</section>
+			</form>
+
+			<section class="extra-box">
+				<h2>Reasoning</h2>
+				<pre id="reasoningOutput"></pre>
+			</section>
+		</main>
+
+		<script src="./src/scripts/code.js"></script>
+	</body>
+</html>

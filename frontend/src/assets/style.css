@@ -1,0 +1,129 @@
+* {
+	box-sizing: border-box;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+	min-height: 100%;
+}
+
+body {
+	font-family: Arial, sans-serif;
+	background: #f5f5f5;
+	overflow: auto;
+}
+
+.container {
+	width: min(98vw, 1650px);
+	min-height: calc(100vh - 20px);
+	margin: 10px auto;
+	padding: 16px;
+	background: #ffffff;
+	border: 1px solid #ddd;
+	display: grid;
+	grid-template-rows: auto auto 1fr auto;
+	gap: 12px;
+}
+
+h1,
+h2 {
+	margin: 0;
+}
+
+.extra-box {
+	width: 100%;
+	margin: 0;
+	padding: 12px;
+	border: 1px solid #ddd;
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+}
+
+.layout {
+	display: grid;
+	grid-template-columns: 1fr auto 1fr;
+	gap: 16px;
+	align-items: stretch;
+	min-height: 0;
+}
+
+.panel {
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+	padding: 12px;
+	border: 1px solid #ddd;
+	min-height: 0;
+}
+
+textarea,
+#submittedOutput,
+#reasoningOutput {
+	width: 100%;
+	padding: 10px;
+	border: 1px solid #999;
+	background: #fff;
+	white-space: pre-wrap;
+}
+
+textarea {
+	resize: vertical;
+}
+
+#contextInput {
+	min-height: 120px;
+	max-height: 220px;
+}
+
+#messageInput,
+#submittedOutput {
+	min-height: 260px;
+}
+
+#reasoningOutput {
+	min-height: 100px;
+	max-height: 25vh;
+	overflow: auto;
+}
+
+.middle-actions {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+button {
+	width: 130px;
+	padding: 12px;
+	cursor: pointer;
+}
+
+#statusText {
+	margin: 0;
+	font-weight: 600;
+	min-height: 20px;
+}
+
+@media (max-width: 900px) {
+	.container {
+		width: 100%;
+		margin: 0;
+		min-height: 100vh;
+		border: none;
+	}
+
+	.layout {
+		grid-template-columns: 1fr;
+	}
+
+	.middle-actions {
+		justify-content: flex-start;
+	}
+
+	#reasoningOutput {
+		max-height: none;
+	}
+}
