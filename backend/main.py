@@ -1,3 +1,4 @@
+import json
 import os
 from pathlib import Path
 
@@ -64,20 +65,35 @@ def generate_text(payload: GenerateRequest):
             input=[
                 {
                     'role': 'system',
-                    'content': 'You improve draft emails and keep user intent. Return concise polished email text only.',
+                    'content': (
+                        'You improve draft emails and keep the user\'s intent. '
+                        'Respond ONLY with a JSON object using exactly these two keys:\n'
+                        '  "email_suggestion": the polished email text\n'
+                        '  "reasoning": a short explanation of the changes you made\n'
+                        'Do not include any text outside the JSON object.'
+                    ),
                 },
                 {
                     'role': 'user',
                     'content': user_input,
                 },
             ],
+            text={'format': {'type': 'json_object'}},
         )
-        return {
-            'output': response.output_text.strip(),
-            'reasoning': 'Draft was rewritten for clarity, structure, and tone while preserving intent.',
-        }
     except Exception as error:
         raise HTTPException(status_code=500, detail=f'OpenAI request failed: {error}') from error
+
+    try:
+        parsed = json.loads(response.output_text)
+        email_output = parsed.get('email_suggestion', '').strip()
+        reasoning_output = parsed.get('reasoning', '').strip()
+    except (json.JSONDecodeError, AttributeError) as error:
+        raise HTTPException(status_code=500, detail=f'Failed to parse AI response as JSON: {error}') from error
+
+    return {
+        'output': email_output,
+        'reasoning': reasoning_output,
+    }
 
 
 if __name__ == '__main__':
