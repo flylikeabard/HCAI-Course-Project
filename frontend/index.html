@@ -12,6 +12,14 @@
 
 			<section class="extra-box">
 				<h2>Context Box</h2>
+				<div class="preset-buttons">
+					<span class="preset-label">Quick Presets:</span>
+					<button type="button" class="preset-btn" onclick="setContext('Make it very formal and professional')">Formal</button>
+					<button type="button" class="preset-btn" onclick="setContext('Keep it casual and friendly')">Friendly</button>
+					<button type="button" class="preset-btn" onclick="setContext('Make it short and concise')">Shorten</button>
+					<button type="button" class="preset-btn" onclick="setContext('Explain as a family emergency')">Emergency</button>
+					<button type="button" class="preset-btn preset-btn--clear" onclick="setContext('')">Clear</button>
+				</div>
 				<textarea id="contextInput" rows="4" placeholder="Add context, previous mails, tone hints..."></textarea>
 			</section>
 

@@ -133,6 +133,40 @@ body {
 	border-top: 1px solid #ddd;
 }
 
+.preset-buttons {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	flex-wrap: wrap;
+}
+
+.preset-label {
+	font-size: 0.85rem;
+	color: #666;
+}
+
+.preset-btn {
+	width: auto;
+	padding: 5px 14px;
+	border: 1px solid #ddd;
+	background: #ffffff;
+	border-radius: 20px;
+	font-size: 0.8rem;
+	cursor: pointer;
+	transition: all 0.2s ease;
+}
+
+.preset-btn:hover {
+	background: #f8f9fa;
+	border-color: #bbb;
+	transform: translateY(-1px);
+}
+
+.preset-btn--clear {
+	color: #d32f2f;
+	border-color: #ffcdd2;
+}
+
 h1,
 h2 {
 	margin: 0;

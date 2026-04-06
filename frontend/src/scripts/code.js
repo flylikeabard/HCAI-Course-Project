@@ -89,3 +89,7 @@ textForm.addEventListener('submit', async (event) => {
 		statusText.textContent = 'Could not connect to backend.';
 	}
 });
+
+function setContext(text) {
+	document.getElementById('contextInput').value = text;
+}
