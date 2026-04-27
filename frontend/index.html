@@ -46,6 +46,7 @@
 							</button>
 						</div>
 						<button type="button" id="historyBackBtn" title="Return to latest suggestion">Back</button>
+						<button type="button" id="clearHistoryBtn" class="clear-history-btn" title="Clear all history">Clear</button>
 					</div>
 					<button type="submit">Submit</button>
 					<button type="button" id="settingsBtn" title="Settings">
@@ -61,7 +62,7 @@
 						<h2>AI Suggestion</h2>
 					</div>
 					<div class="output-wrapper">
-						<pre id="submittedOutput"></pre>
+						<pre id="submittedOutput" class="is-empty" data-empty-text="No suggestion yet. Submit your email to generate a draft."></pre>
 						<button type="button" id="copyBtn" disabled title="Copy to clipboard">
 							<svg id="iconCopy" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
 								<rect x="9" y="2" width="13" height="13" rx="2" ry="2"></rect>
@@ -78,7 +79,7 @@
 
 			<section class="extra-box">
 				<h2>Reasoning</h2>
-				<pre id="reasoningOutput"></pre>
+				<pre id="reasoningOutput" class="is-empty" data-empty-text="Reasoning will appear here after generation."></pre>
 			</section>
 		</main>
 

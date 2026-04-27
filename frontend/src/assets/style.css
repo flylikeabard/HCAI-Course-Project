@@ -285,6 +285,18 @@ textarea:focus {
 	background: #f8ecea;
 }
 
+.clear-history-btn {
+	color: var(--danger);
+	border-color: rgba(168, 90, 85, 0.22);
+	background: var(--danger-soft);
+}
+
+.clear-history-btn:hover:not(:disabled) {
+	border-color: rgba(168, 90, 85, 0.4);
+	color: #8f443f;
+	background: #f8ecea;
+}
+
 .extra-box,
 .panel {
 	background: linear-gradient(180deg, rgba(255, 254, 250, 0.92), rgba(246, 241, 233, 0.9));
@@ -495,7 +507,7 @@ textarea:focus {
 #copyBtn {
 	position: absolute;
 	top: 10px;
-	right: 10px;
+	right: 18px;
 	width: 36px;
 	height: 36px;
 	padding: 0;
@@ -572,6 +584,18 @@ textarea:read-only {
 	background: linear-gradient(180deg, #fffefb 0%, #f6f1e8 100%);
 }
 
+#submittedOutput.is-empty,
+#reasoningOutput.is-empty {
+	color: #8b8f87;
+	font-style: italic;
+	position: relative;
+}
+
+#submittedOutput.is-empty::before,
+#reasoningOutput.is-empty::before {
+	content: attr(data-empty-text);
+}
+
 #contextInput {
 	min-height: 0;
 	height: clamp(112px, 18vh, 155px);
@@ -582,6 +606,11 @@ textarea:read-only {
 #submittedOutput {
 	min-height: 0;
 	height: clamp(185px, 36vh, 235px);
+}
+
+#submittedOutput {
+	overflow: auto;
+	overflow-wrap: anywhere;
 }
 
 #messageInput {
@@ -633,9 +662,39 @@ textarea:read-only {
 #statusText {
 	margin: 0;
 	font-weight: 700;
-	font-size: 0.88rem;
+	font-size: 0.84rem;
+	line-height: 1.35;
+	min-height: 24px;
+	padding: 3px 8px;
+	border-radius: 9px;
+	border: 1px solid transparent;
 	color: var(--muted);
-	min-height: 20px;
+	background: transparent;
+	transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+}
+
+#statusText.status--info {
+	color: #59615b;
+	background: rgba(237, 240, 233, 0.85);
+	border-color: rgba(183, 194, 176, 0.8);
+}
+
+#statusText.status--loading {
+	color: #3a5442;
+	background: rgba(232, 238, 233, 0.92);
+	border-color: rgba(127, 153, 131, 0.8);
+}
+
+#statusText.status--success {
+	color: #2d4a37;
+	background: rgba(226, 238, 228, 0.95);
+	border-color: rgba(103, 142, 112, 0.8);
+}
+
+#statusText.status--error {
+	color: #7d3733;
+	background: rgba(248, 232, 228, 0.95);
+	border-color: rgba(196, 132, 124, 0.8);
 }
 
 @media (max-width: 900px) {

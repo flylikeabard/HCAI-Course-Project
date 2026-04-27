@@ -35,6 +35,7 @@ const historyPrevBtn = document.getElementById('historyPrevBtn');
 const historyNextBtn = document.getElementById('historyNextBtn');
 const historyBackBtn = document.getElementById('historyBackBtn');
 const historyCounter = document.getElementById('historyCounter');
+const clearHistoryBtn = document.getElementById('clearHistoryBtn');
 
 const iconCopy = document.getElementById('iconCopy');
 const iconCheck = document.getElementById('iconCheck');
@@ -43,6 +44,46 @@ const sessionHistory = [];
 let isHistoryMode = false;
 let historyIndex = -1;
 let draftBeforeHistory = null;
+
+function setStatus(message, type = 'info') {
+	statusText.textContent = message;
+	statusText.classList.remove('status--info', 'status--success', 'status--error', 'status--loading');
+	if (message) {
+		statusText.classList.add(`status--${type}`);
+	}
+}
+
+function setOutputContent(element, text) {
+	const safeText = text || '';
+	element.textContent = safeText;
+	element.classList.toggle('is-empty', safeText.trim().length === 0);
+}
+
+// Load history from sessionStorage on page init
+function loadHistoryFromStorage() {
+	try {
+		const stored = sessionStorage.getItem('emailHistoryData');
+		if (stored) {
+			const parsed = JSON.parse(stored);
+			sessionHistory.push(...parsed);
+		}
+	} catch (error) {
+		console.error('Failed to load history from sessionStorage:', error);
+	}
+}
+
+// Save history to sessionStorage
+function saveHistoryToStorage() {
+	try {
+		sessionStorage.setItem('emailHistoryData', JSON.stringify(sessionHistory));
+	} catch (error) {
+		console.error('Failed to save history to sessionStorage:', error);
+	}
+}
+
+// Load on page init
+loadHistoryFromStorage();
+updateHistoryControls();
 
 function setInputReadOnlyState(readOnly) {
 	messageInput.readOnly = readOnly;
@@ -71,15 +112,15 @@ function updateHistoryControls() {
 
 function renderLatestSuggestion() {
 	if (sessionHistory.length === 0) {
-		submittedOutput.textContent = '';
-		reasoningOutput.textContent = '';
+		setOutputContent(submittedOutput, '');
+		setOutputContent(reasoningOutput, '');
 		copyBtn.disabled = true;
 		return;
 	}
 
 	const latest = sessionHistory[sessionHistory.length - 1];
-	submittedOutput.textContent = latest.output;
-	reasoningOutput.textContent = latest.reasoning;
+	setOutputContent(submittedOutput, latest.output);
+	setOutputContent(reasoningOutput, latest.reasoning);
 	copyBtn.disabled = !latest.output;
 }
 
@@ -89,8 +130,8 @@ function renderHistoryEntry() {
 		return;
 	}
 
-	submittedOutput.textContent = entry.output;
-	reasoningOutput.textContent = entry.reasoning;
+	setOutputContent(submittedOutput, entry.output);
+	setOutputContent(reasoningOutput, entry.reasoning);
 	messageInput.value = entry.prompt;
 	contextInput.value = entry.context;
 	copyBtn.disabled = !entry.output;
@@ -99,7 +140,7 @@ function renderHistoryEntry() {
 
 function enterHistoryMode() {
 	if (sessionHistory.length === 0) {
-		statusText.textContent = 'No history in this session yet.';
+		setStatus('No history in this session yet. Generate at least one draft first.', 'info');
 		return;
 	}
 
@@ -117,13 +158,22 @@ function exitHistoryMode() {
 	isHistoryMode = false;
 	historyIndex = -1;
 	setInputReadOnlyState(false);
-	if (draftBeforeHistory) {
+	const hasDraftContent = draftBeforeHistory
+		&& (draftBeforeHistory.prompt.trim().length > 0 || draftBeforeHistory.context.trim().length > 0);
+
+	if (hasDraftContent) {
 		messageInput.value = draftBeforeHistory.prompt;
 		contextInput.value = draftBeforeHistory.context;
+	} else if (sessionHistory.length > 0) {
+		const latest = sessionHistory[sessionHistory.length - 1];
+		messageInput.value = latest.prompt || '';
+		contextInput.value = latest.context || '';
 	}
 	draftBeforeHistory = null;
 	renderLatestSuggestion();
-	statusText.textContent = sessionHistory.length > 0 ? 'Showing latest suggestion.' : statusText.textContent;
+	if (sessionHistory.length > 0) {
+		setStatus('Showing latest suggestion.', 'info');
+	}
 	updateHistoryControls();
 }
 
@@ -151,6 +201,14 @@ historyNextBtn.addEventListener('click', () => {
 	renderHistoryEntry();
 });
 
+clearHistoryBtn.addEventListener('click', () => {
+	sessionHistory.length = 0;
+	saveHistoryToStorage();
+	exitHistoryMode();
+	setStatus('History cleared.', 'info');
+	updateHistoryControls();
+});
+
 updateHistoryControls();
 
 copyBtn.addEventListener('click', () => {
@@ -175,9 +233,9 @@ textForm.addEventListener('submit', async (event) => {
 	const contextText = contextInput.value.trim();
 
 	if (!promptText) {
-		statusText.textContent = 'Please write something before submitting.';
-		submittedOutput.textContent = '';
-		reasoningOutput.textContent = '';
+		setStatus('Please write something before submitting.', 'error');
+		setOutputContent(submittedOutput, '');
+		setOutputContent(reasoningOutput, '');
 		copyBtn.disabled = true;
 		return;
 	}
@@ -186,10 +244,20 @@ textForm.addEventListener('submit', async (event) => {
 		exitHistoryMode();
 	}
 
-	statusText.textContent = 'Generating...';
-	submittedOutput.textContent = '';
-	reasoningOutput.textContent = '';
+	setStatus('Generating draft...', 'loading');
+	setOutputContent(submittedOutput, '');
+	setOutputContent(reasoningOutput, '');
 	copyBtn.disabled = true;
+
+	// Disable all interactive buttons during API call
+	submitBtn.disabled = true;
+	historyToggleBtn.disabled = true;
+	historyPrevBtn.disabled = true;
+	historyNextBtn.disabled = true;
+	clearHistoryBtn.disabled = true;
+	presetButtons.forEach((button) => {
+		button.disabled = true;
+	});
 
 	try {
 		const response = await fetch(`${apiBaseUrl}/api/generate`, {
@@ -206,7 +274,15 @@ textForm.addEventListener('submit', async (event) => {
 		const data = await response.json();
 
 		if (!response.ok) {
-			statusText.textContent = data.detail || 'Something went wrong.';
+			setStatus(data.detail || 'Could not generate draft. Please try again.', 'error');
+			// Re-enable buttons on error
+			submitBtn.disabled = false;
+			historyToggleBtn.disabled = false;
+			clearHistoryBtn.disabled = false;
+			presetButtons.forEach((button) => {
+				button.disabled = false;
+			});
+			updateHistoryControls();
 			return;
 		}
 
@@ -219,13 +295,29 @@ textForm.addEventListener('submit', async (event) => {
 		};
 
 		sessionHistory.push(historyItem);
-		submittedOutput.textContent = historyItem.output;
-		reasoningOutput.textContent = historyItem.reasoning;
-		statusText.textContent = 'Done';
+		saveHistoryToStorage();
+		setOutputContent(submittedOutput, historyItem.output);
+		setOutputContent(reasoningOutput, historyItem.reasoning);
+		setStatus('Draft generated successfully.', 'success');
 		copyBtn.disabled = !historyItem.output;
+		// Re-enable buttons after successful generation
+		submitBtn.disabled = false;
+		historyToggleBtn.disabled = false;
+		clearHistoryBtn.disabled = false;
+		presetButtons.forEach((button) => {
+			button.disabled = false;
+		});
 		updateHistoryControls();
 	} catch (error) {
-		statusText.textContent = 'Could not connect to backend.';
+		setStatus('Could not connect to backend. Check that the API server is running.', 'error');
+		// Re-enable buttons on error
+		submitBtn.disabled = false;
+		historyToggleBtn.disabled = false;
+		clearHistoryBtn.disabled = false;
+		presetButtons.forEach((button) => {
+			button.disabled = false;
+		});
+		updateHistoryControls();
 	}
 });
 
