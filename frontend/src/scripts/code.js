@@ -1,13 +1,44 @@
 const settingsBtn = document.getElementById('settingsBtn');
 const settingsModal = document.getElementById('settingsModal');
 const closeSettingsBtn = document.getElementById('closeSettingsBtn');
+const cancelSettingsBtn = document.getElementById('cancelSettingsBtn');
 const saveSettingsBtn = document.getElementById('saveSettingsBtn');
+const settingTemperature = document.getElementById('settingTemperature');
+const settingMaxTokens = document.getElementById('settingMaxTokens');
+const settingModel = document.getElementById('settingModel');
+const tempDisplay = document.getElementById('tempDisplay');
+const tempWord = document.getElementById('tempWord');
+
+const TEMP_WORDS = {
+	0.0: 'Very precise', 0.1: 'Very precise', 0.2: 'Focused', 0.3: 'Focused',
+	0.4: 'Mostly focused', 0.5: 'Slightly varied', 0.6: 'Slightly varied',
+	0.7: 'Moderate', 0.8: 'Moderate', 0.9: 'Balanced', 1.0: 'Balanced',
+	1.1: 'More varied', 1.2: 'More varied', 1.3: 'Expressive', 1.4: 'Expressive',
+	1.5: 'Very expressive', 1.6: 'Imaginative', 1.7: 'Imaginative',
+	1.8: 'Highly creative', 1.9: 'Experimental', 2.0: 'Maximum chaos',
+};
+
+function updateSlider(val) {
+	const v = parseFloat(val);
+	const pct = (v / 2) * 100;
+	tempDisplay.textContent = v.toFixed(1);
+	tempWord.textContent = TEMP_WORDS[Math.round(v * 10) / 10] || '';
+	settingTemperature.style.setProperty('--fill', `${pct}%`);
+	tempDisplay.style.color = v > 1.5 ? `hsl(${14 + v * 8}, 60%, 38%)` : 'var(--accent)';
+}
+
+settingTemperature.addEventListener('input', (e) => updateSlider(e.target.value));
+updateSlider(1.0);
 
 settingsBtn.addEventListener('click', () => {
 	settingsModal.hidden = false;
 });
 
 closeSettingsBtn.addEventListener('click', () => {
+	settingsModal.hidden = true;
+});
+
+cancelSettingsBtn.addEventListener('click', () => {
 	settingsModal.hidden = true;
 });
 
@@ -268,6 +299,9 @@ textForm.addEventListener('submit', async (event) => {
 			body: JSON.stringify({
 				prompt: promptText,
 				context: contextText,
+				temperature: parseFloat(settingTemperature.value),
+				max_tokens: parseInt(settingMaxTokens.value, 10),
+				model: settingModel.value,
 			}),
 		});
 

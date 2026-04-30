@@ -17,6 +17,9 @@ load_dotenv(BACKEND_DIR / '.env', override=True)
 class GenerateRequest(BaseModel):
     prompt: str
     context: str = ''
+    temperature: float = 1.0
+    max_tokens: int = 1024
+    model: str = 'gpt-4o-mini'
 
 
 class GenerateResponse(BaseModel):
@@ -57,11 +60,15 @@ def generate_text(payload: GenerateRequest):
         user_input = f'Context:\n{context}\n\nUser email:\n{prompt}'
 
     client = OpenAI(api_key=api_key)
-    model = os.getenv('OPENAI_MODEL', 'gpt-4o-mini')
+    model = payload.model or os.getenv('OPENAI_MODEL', 'gpt-4o-mini')
+    temperature = max(0.0, min(2.0, payload.temperature))
+    max_tokens = max(1, min(4096, payload.max_tokens))
 
     try:
         response = client.responses.create(
             model=model,
+            temperature=temperature,
+            max_output_tokens=max_tokens,
             input=[
                 {
                     'role': 'system',

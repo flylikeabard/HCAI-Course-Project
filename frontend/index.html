@@ -97,11 +97,21 @@
 				</div>
 				<div class="modal-body">
 					<div class="setting-row">
-						<label for="settingTemperature">Temperature <span class="setting-hint">(0 – 2)</span></label>
-						<input type="number" id="settingTemperature" min="0" max="2" step="0.1" value="1" placeholder="0 – 2">
+						<label for="settingTemperature">Temperature <span class="setting-hint">creativity vs precision</span></label>
+						<div class="temp-value-row">
+							<span class="temp-number" id="tempDisplay">1.0</span>
+							<span class="temp-word" id="tempWord">Balanced</span>
+						</div>
+						<input type="range" id="settingTemperature" min="0" max="2" step="0.1" value="1" class="temp-slider">
+						<div class="temp-tick-row">
+							<span class="temp-tick">0 · Precise</span>
+							<span class="temp-tick">1 · Balanced</span>
+							<span class="temp-tick">2 · Creative</span>
+						</div>
 					</div>
+					<hr class="modal-divider">
 					<div class="setting-row">
-						<label for="settingMaxTokens">Max output tokens</label>
+						<label for="settingMaxTokens">Max output tokens <span class="setting-hint">(1 – 4096)</span></label>
 						<input type="number" id="settingMaxTokens" min="1" max="4096" step="1" value="1024" placeholder="1 – 4096">
 					</div>
 					<div class="setting-row">
@@ -115,6 +125,7 @@
 					</div>
 				</div>
 				<div class="modal-footer">
+					<button type="button" id="cancelSettingsBtn" class="btn-cancel">Cancel</button>
 					<button type="button" id="saveSettingsBtn">Save</button>
 				</div>
 			</div>
